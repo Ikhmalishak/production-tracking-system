@@ -26,7 +26,7 @@ class SkuController extends Controller
                 'success' => false,
                 'message' => 'Something went wrong!',
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 422);
         }
     }
 

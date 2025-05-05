@@ -142,8 +142,8 @@ function Form({ onSubmitSuccess, project, skuId }) {
 
   return (
     <Box
-      maxW="3xl"
-      w={{ base: "90%", md: "500px", lg: "600px" }}
+      maxW="4xl"
+      w={{ base: "90%", md: "600px", lg: "1200px" }}
       p={8}
       borderWidth={1}
       borderRadius="lg"

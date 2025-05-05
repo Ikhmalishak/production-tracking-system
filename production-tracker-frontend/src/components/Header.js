@@ -18,7 +18,6 @@ function Header({ title }) {
       as="header"
       py={4}
       px={6}
-      mb={6}
       bg={bgColor}
       borderBottom="1px"
       borderColor={borderColor}

@@ -11,12 +11,13 @@ import {
     ModalFooter,
     Button,
     Select,
+    Divider,
   } from "@chakra-ui/react";
   import { useState, useEffect } from "react";
   import Form from "../components/Form"; // Update path
   import OutputList from "../components/Table"; // Update path
   import Header from "../components/Header"; // Update path (if you have Header)
-  
+
   function Home() {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -80,7 +81,8 @@ import {
         ) : (
           <Box p={2}>
             <Header title={selectedProjectName || "Select a Project"} rightContent="Action" />
-            <Flex p={4} gap={6} direction={{ base: "column", md: "row" }} align="start">
+            <Divider mb={6}/>
+            <Flex p={4} gap={{ base: "3", md: "3", lg: "6" }} direction={{ base: "column", md: "row" }} align="start">
               <Form
                 onSubmitSuccess={refreshData}
                 project={{ id: selectedProjectId, name: selectedProjectName }}
