@@ -1,3 +1,4 @@
+// Updated Header.js - Full width across the page
 import React from 'react';
 import {
   Box,
@@ -22,6 +23,11 @@ function Header({ title }) {
       borderBottom="1px"
       borderColor={borderColor}
       boxShadow="sm"
+      position="fixed"
+      top="0"
+      left="0"
+      right="0"
+      zIndex="30"
       width="100%"
     >
       <Flex align="center" width="100%">

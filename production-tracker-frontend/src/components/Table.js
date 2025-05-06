@@ -70,19 +70,15 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
 
   return (
     <Box
-      maxW="3xl"
-      w={{ base: "50%", md: "800px", lg: "1000px" }}
-      p={8}
+      flex="1"
+      p={4}
       borderWidth={1}
       borderRadius="lg"
       boxShadow="md"
-      // ml={{ base: 0, md: 10 }}
+      minW={{ base: "100%", md: "35%" }}
+      maxW={{ base: "100%", lg: "30%" }}
     >
-      <TableContainer
-        width={{ base: "100%", md: "100%" }}
-        ml={{ base: 0, md: 0 }}
-        overflowX="auto"
-      >
+      <TableContainer width="100%" overflowX="auto">
         <Flex justifyContent="flex-end" align="center" mb="2">
           <Select
             placeholder={loadingSkus ? "Loading SKUs..." : "Filter by SKU"}
@@ -97,7 +93,7 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
             disabled={loadingSkus}
           >
             {skuLists.map((sku) => (
-              <option key={sku.code} value={sku.id}>
+              <option key={sku.code || sku.id} value={sku.id}>
                 {sku.sku_code || `SKU ${sku.id}`}
               </option>
             ))}
