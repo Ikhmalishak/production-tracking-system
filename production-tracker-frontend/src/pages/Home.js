@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Spacer,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -119,7 +118,7 @@ function Home() {
             title={selectedProjectName || "Select a Project"}
             rightContent="Action"
           />
-          <Divider mb={6} />
+          <Divider mb={20}/> {/* Added Divider for better UI separation */}
           <Flex
             p={4}
             gap={4}
@@ -186,7 +185,7 @@ function Home() {
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose} isDisabled={!selectedProjectId}>
+                <Button onClick={onClose} isDisabled={!selectedProjectId || !selectedSkuId || !selectedWipId}>
                   Confirm
                 </Button>
               </ModalFooter>

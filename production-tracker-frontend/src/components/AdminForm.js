@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
   Button,
   FormControl,
   FormLabel,
@@ -12,31 +11,26 @@ import {
   AlertIcon,
   Heading,
   useColorModeValue,
-  Container,
   Card,
   CardBody,
   CardHeader,
-  Divider,
-  Stack,
   InputGroup,
   InputLeftElement,
   Icon,
   Badge,
   Text,
-  Flex,
-  Tooltip
+  Flex
 } from '@chakra-ui/react';
 import { 
   FiCode, 
   FiFileText, 
   FiPackage, 
   FiCheckCircle, 
-  FiAlertCircle, 
   FiHash, 
   FiGrid, 
   FiLayers 
 } from 'react-icons/fi';
-import axios from 'axios';
+import axiosInstance from '../utils/api'; // Adjust the import path as necessary
 
 // Axios config
 const axiosInstance = axios.create({
