@@ -17,6 +17,7 @@ import Form from "../components/Form";
 import OutputList from "../components/Table";
 import Header from "../components/Header";
 import axios from "axios";
+import axiosInstance from "../utils/api"
 
 function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -40,16 +41,16 @@ function Home() {
 
   useEffect(() => {
     if (!selectedProjectId) return;
-    axios
-      .get(`http://localhost:8000/api/skus/projects/${selectedProjectId}`)
+    axiosInstance
+      .get(`/skus/projects/${selectedProjectId}`)
       .then((res) => setSkuLists(res.data.data || []))
       .catch((err) => console.error("Failed to fetch SKUs:", err.message));
   }, [selectedProjectId]);
 
   useEffect(() => {
     if (!selectedSkuId) return;
-    axios
-      .get(`http://localhost:8000/api/wips/skus/${selectedSkuId}`)
+    axiosInstance
+      .get(`/wips/skus/${selectedSkuId}`)
       .then((res) => setWipLists(res.data.data || []))
       .catch((err) => {
         console.error("Failed to fetch WIPs:", err.message);
@@ -58,8 +59,8 @@ function Home() {
   }, [selectedSkuId]);
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/projects")
+    axiosInstance
+      .get("/projects")
       .then((res) => setProjects(res.data.data.data))
       .catch((err) => console.error("Failed to fetch projects:", err));
   }, []);

@@ -12,6 +12,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import axiosInstance from "../utils/api"; // Adjust the import path if needed
 
 function OutputList({ refreshTrigger, skuId, projectId }) {
   const [data, setData] = useState([]);
@@ -26,11 +27,9 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
 
       setLoadingSkus(true);
       try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/api/skus/projects/${projectId}`
-        );
-        const result = await response.json();
-        setSkuLists(result.data || []);
+        const response = await axiosInstance.get(`/skus/projects/${projectId}`);
+        console.log("SKUs response:", response.data.data);
+        setSkuLists(response.data.data || []);
       } catch (error) {
         console.error("Error fetching SKUs:", error);
       } finally {
@@ -41,20 +40,17 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
     fetchSkus();
   }, [projectId]);
 
-  // Fetch Scan Data whenever selectedSku OR refreshTrigger changes
+  // Fetch scan data when selectedSku or refreshTrigger changes
   useEffect(() => {
     fetchData(selectedSku);
   }, [selectedSku, refreshTrigger]);
 
   const fetchData = async (sku = "") => {
     try {
-      const url = sku
-        ? `http://127.0.0.1:8000/api/scans?sku_id=${sku}`
-        : `http://127.0.0.1:8000/api/scans`;
-
-      const response = await fetch(url);
-      const result = await response.json();
-      setData(result.data.data || []);
+      const url = sku ? `/scans?sku_id=${sku}` : `/scans`;
+      const response = await axiosInstance.get(url);
+      console.log("Scan data:", response.data.data.data);
+      setData(response.data.data.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
       setData([]);
@@ -88,12 +84,12 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
             onChange={(e) => {
               const selected = e.target.value;
               console.log("Selected SKU:", selected);
-              setSelectedSku(selected); // This will automatically trigger fetching!
+              setSelectedSku(selected);
             }}
             disabled={loadingSkus}
           >
             {skuLists.map((sku) => (
-              <option key={sku.code || sku.id} value={sku.id}>
+              <option key={sku.id} value={sku.id}>
                 {sku.sku_code || `SKU ${sku.id}`}
               </option>
             ))}
@@ -115,8 +111,8 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
             {data.length > 0 ? (
               data.map((item) => (
                 <Tr key={item.id}>
-                  <Td>{item.sku.sku_code}</Td>
-                  <Td>{item.wip.wip_code}</Td>
+                  <Td>{item.sku?.sku_code}</Td>
+                  <Td>{item.wip?.wip_code}</Td>
                   <Td>{item.serial_id}</Td>
                   <Td>{item.scan_number}</Td>
                   <Td>{new Date(item.created_at).toLocaleString()}</Td>

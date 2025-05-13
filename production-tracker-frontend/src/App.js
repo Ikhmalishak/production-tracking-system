@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './pages/Home';
-import AdminForm from './pages/Admin/AdminForm';
+import Home from "./pages/Home";
+import AdminForm from "./pages/Admin/AdminForm";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Login from "./pages/Login";
 import ProtectedRoute from "./utils/ProtectedRoute"; // Import ProtectedRoute
@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/test" element={<Home />} />
-        
+
         {/* Protect the AdminForm route */}
         <Route
           path="/adminform"
@@ -20,7 +20,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Protect the AdminDashboard route */}
         <Route
           path="/admindashboard"
@@ -30,7 +30,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
+        <Route
+          path="/operatordashboard"
+          element={
+            <ProtectedRoute requiredRole="operator">
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Login route doesn't need protection */}
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Login />} />

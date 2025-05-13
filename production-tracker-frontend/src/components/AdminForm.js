@@ -32,11 +32,6 @@ import {
 } from 'react-icons/fi';
 import axiosInstance from '../utils/api'; // Adjust the import path as necessary
 
-// Axios config
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
-  withCredentials: true,
-});
 
 // ProjectForm Component
 export function ProjectForm({ initialData = {}, onSubmit }) {
@@ -183,7 +178,7 @@ export function SKUForm({ onSubmit }) {
     const fetchProjects = async () => {
       setIsLoadingProjects(true);
       try {
-        const response = await axios.get('http://localhost:8000/api/projects');
+        const response = await axiosInstance.get('http://localhost:8000/api/projects');
         console.log("Successfully fetched", response.data.data.data);
         setProjects(response.data.data.data);
       } catch (error) {
@@ -346,7 +341,7 @@ export function WIPForm({ initialData = {}, onSubmit }) {
     const fetchSkus = async () => {
       setIsLoadingSkus(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/skus`);
+        const response = await axiosInstance.get(`http://localhost:8000/api/skus`);
         console.log(response.data.data.data);
         setSkus(response.data.data.data);
       } catch (error) {

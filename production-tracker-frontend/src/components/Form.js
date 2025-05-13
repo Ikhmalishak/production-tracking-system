@@ -9,13 +9,16 @@ import {
   Heading,
   Alert,
   AlertIcon,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
+import axiosInstance from "../utils/api"; // Adjust the import path as necessary
 
 function Form({ onSubmitSuccess, project, skuId, wipId }) {
   const { id: projectId, name: projectName } = project || {};
   const { id: selectedSkuId, code: selectedSkuCode } = skuId || {};
   const { id: selectedWipId, code: selectedWipCode } = wipId || {};
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     wip_id: selectedWipId || "",
@@ -65,23 +68,41 @@ function Form({ onSubmitSuccess, project, skuId, wipId }) {
     console.log("Submitting data:", formData);
   
     try {
-      const res = await axios.post("http://localhost:8000/api/scans", {
+      const res = await axiosInstance.post("/scans", {
         ...formData,
         scanned_at: new Date().toISOString(),
       });
   
-      console.log("✅ Scan submitted:", res.data);
+      toast({
+        title: "Scan successful.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      // console.log("✅ Scan submitted:", res.data);
       setFormData((prev) => ({ ...prev, serial_id: "" }));
       inputRef.current?.focus();
-      setIsSuccess(true);
-      setMessage("Item successfully scanned!");
+      // setIsSuccess(true);
+      // setMessage("Item successfully scanned!");
   
       if (onSubmitSuccess) onSubmitSuccess(formData.sku_id);
     } catch (error) {
+
       const errMsg = error.response?.data?.error || "An unexpected error occurred";
-      console.error("❌ Error:", errMsg);
-      setIsSuccess(false);
-      setMessage(errMsg);
+
+      toast({
+        title: "Scan failed.",
+        description: errMsg,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+
+      // console.error("❌ Error:", errMsg);
+      // setIsSuccess(false);
+      // setMessage(errMsg);
     }
   };
 

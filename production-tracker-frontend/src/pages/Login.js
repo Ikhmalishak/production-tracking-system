@@ -12,7 +12,7 @@ import {
   import { useState, useEffect } from "react";
   import axios from "axios";
   import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
-  import { setToken, setUserRole } from "../utils/Auth"; // Import the setToken function to store the token  
+  import { setToken, setUserRole } from "../utils/auth"; // Import the setToken function to store the token  
 
   function Login() {
     const [email, setEmail] = useState("");

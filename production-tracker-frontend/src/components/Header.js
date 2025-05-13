@@ -1,5 +1,5 @@
 // Updated Header.js - Full width across the page
-import React from 'react';
+import React from "react";
 import {
   Box,
   Heading,
@@ -7,12 +7,37 @@ import {
   Spacer,
   useColorModeValue,
   IconButton,
-} from '@chakra-ui/react';
-import { RepeatIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { RepeatIcon } from "@chakra-ui/icons";
+import { FiLogOut } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/api"; // Import your axios instance
 
 function Header({ title }) {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const navigate = useNavigate(); // Initialize navigate for redirection
+
+  // Function to handle logout
+  const handleLogout = async (e) => {
+    // Perform logout logic here (e.g., clear token, redirect to login page)
+    e.preventDefault(); // Prevent page reload
+
+    try {
+      // Make a logout request to the server
+      await axiosInstance.post("/logout");
+
+      // Clear token from localStorage
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      console.log("Token removed from localStorage");
+
+      //navigate to login page
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <Box
@@ -36,9 +61,9 @@ function Header({ title }) {
         </Heading>
         <Spacer />
         <IconButton
-          icon={<RepeatIcon />}
+          icon={<FiLogOut />}
           aria-label="Refresh"
-          onClick={() => window.location.reload()}
+          onClick={handleLogout}
           colorScheme="teal"
           variant="outline"
         />

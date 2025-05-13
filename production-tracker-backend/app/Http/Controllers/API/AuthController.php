@@ -18,7 +18,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:user,admin',  // Here, we're defining roles as either 'user' or 'admin'
+            'role' => 'required|in:operator,admin',  // Here, we're defining roles as either 'user' or 'admin'
         ]);
 
         // Create a new user

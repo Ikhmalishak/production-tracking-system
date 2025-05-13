@@ -10,22 +10,46 @@ import {
   IconButton,
   Tooltip,
 } from "@chakra-ui/react";
-import { 
-  FiHome, 
-  FiUsers, 
-  FiSettings, 
-  FiPackage, 
-  FiFileText, 
-  FiLogOut, 
-  FiChevronLeft, 
-  FiChevronRight 
+import {
+  FiHome,
+  FiUsers,
+  FiSettings,
+  FiPackage,
+  FiFileText,
+  FiLogOut,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
+import axiosInstance from "../utils/api"; // Import your axios instance
+import { useNavigate } from "react-router-dom";
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const itemHoverBg = useColorModeValue("gray.100", "gray.700");
   const activeItemBg = useColorModeValue("teal.500", "teal.400");
+  const navigate = useNavigate(); // Initialize navigate for redirection
+
+  // Function to handle logout
+  const handleLogout = async (e) => {
+    // Perform logout logic here (e.g., clear token, redirect to login page)
+    e.preventDefault(); // Prevent page reload
+
+    try {
+      // Make a logout request to the server
+      await axiosInstance.post("/logout");
+
+      // Clear token from localStorage
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      console.log("Token removed from localStorage");
+
+      //navigate to login page
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   const menuItems = [
     { label: "Dashboard", icon: FiHome, isActive: false },
@@ -35,7 +59,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
     { label: "Analytics", icon: FiFileText },
     { label: "Settings", icon: FiSettings },
   ];
-  
+
   return (
     <Box
       position="fixed"
@@ -60,13 +84,13 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
         right="-3"
         size="sm"
         borderRadius="full"
-        bg='teal.300'
+        bg="teal.300"
         borderWidth="1px"
         borderColor={borderColor}
         zIndex={30}
         onClick={toggleSidebar}
       />
-      
+
       <VStack spacing={3} align="stretch" mt={6}>
         {menuItems.map((item, index) => {
           return (
@@ -92,13 +116,13 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
                 transition="all 0.2s"
               >
                 <Flex align="center" gap={3}>
-                  <Box 
-                    as={item.icon} 
-                    fontSize="20px" 
+                  <Box
+                    as={item.icon}
+                    fontSize="20px"
                     color={item.isActive ? "white" : "inherit"}
                   />
                   {isSidebarOpen && (
-                    <Text 
+                    <Text
                       fontWeight={item.isActive ? "medium" : "normal"}
                       opacity={isSidebarOpen ? 1 : 0}
                       transition="opacity 0.3s"
@@ -122,13 +146,14 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
         justifyContent="center"
       >
         <HStack spacing={4}>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="sm"
             leftIcon={<FiLogOut />}
             colorScheme="red"
             justifyContent={isSidebarOpen ? "flex-start" : "center"}
             width={isSidebarOpen ? "auto" : "40px"}
+            onClick={handleLogout}
           >
             {isSidebarOpen && "Logout"}
           </Button>

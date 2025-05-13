@@ -6,7 +6,6 @@ use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SkuController;
 use App\Http\Controllers\API\WipController;
 use App\Http\Controllers\API\ScanRecordController;
-use Illuminate\Container\Attributes\Auth;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);

@@ -18,7 +18,7 @@ class ProjectController extends Controller
             $query = Project::query();
 
             // Order and paginate
-            $projects = $query->orderBy('created_at', 'desc')->paginate(10);
+            $projects = $query->orderBy('created_at', 'asc')->paginate(10);
 
             return response()->json([
                 'success' => true,

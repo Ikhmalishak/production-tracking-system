@@ -1,6 +1,6 @@
 // utils/api.js
 import axios from "axios";
-import { getToken, logout } from "./Auth";
+import { getToken, logout } from "./auth";
 
 // Create an axios instance with base URL
 const api = axios.create({
