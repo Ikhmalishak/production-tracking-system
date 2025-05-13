@@ -4,6 +4,9 @@ import AdminForm from "./pages/Admin/AdminForm";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Login from "./pages/Login";
 import ProtectedRoute from "./utils/ProtectedRoute"; // Import ProtectedRoute
+import Dashboard from "./pages/Admin/Dashboard";
+import ProjectsPage from "./pages/Admin/ProjectPage";
+import AdminLayout from "./layout/AdminLayout";
 
 function App() {
   return (
@@ -16,7 +19,9 @@ function App() {
           path="/adminform"
           element={
             <ProtectedRoute requiredRole="admin">
-              <AdminForm />
+              <AdminLayout>
+                <AdminForm />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -27,6 +32,30 @@ function App() {
           element={
             <ProtectedRoute requiredRole="admin">
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protect the AdminDashboard route */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <Dashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protect the AdminDashboard route */}
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <ProjectsPage />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />

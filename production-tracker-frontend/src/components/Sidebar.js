@@ -1,4 +1,4 @@
-// Updated Sidebar.js - Positioned below header
+// Updated Sidebar.js with working navigation
 import {
   Box,
   Button,
@@ -19,46 +19,48 @@ import {
   FiLogOut,
   FiChevronLeft,
   FiChevronRight,
+  FiLayers,
 } from "react-icons/fi";
 import axiosInstance from "../utils/api"; // Import your axios instance
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.200", "gray.700");
   const itemHoverBg = useColorModeValue("gray.100", "gray.700");
   const activeItemBg = useColorModeValue("teal.500", "teal.400");
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Function to handle logout
   const handleLogout = async (e) => {
-    // Perform logout logic here (e.g., clear token, redirect to login page)
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
     try {
-      // Make a logout request to the server
       await axiosInstance.post("/logout");
-
-      // Clear token from localStorage
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       console.log("Token removed from localStorage");
-
-      //navigate to login page
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
 
+  // Define menu items with their routes
   const menuItems = [
-    { label: "Dashboard", icon: FiHome, isActive: false },
-    { label: "Customers", icon: FiUsers },
-    { label: "Products", icon: FiPackage },
-    { label: "Orders", icon: FiFileText },
-    { label: "Analytics", icon: FiFileText },
-    { label: "Settings", icon: FiSettings },
+    { label: "Dashboard", icon: FiHome, path: "/dashboard" },
+    { label: "Manage Projects", icon: FiLayers, path: "/projects" },
+    // { label: "Products", icon: FiPackage, path: "/products" },
+    // { label: "Orders", icon: FiFileText, path: "/orders" },
+    // { label: "Analytics", icon: FiFileText, path: "/analytics" },
+    { label: "Settings", icon: FiSettings, path: "" },// add settings path later 
   ];
+
+  // Handle navigation when menu item is clicked
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   return (
     <Box
@@ -93,6 +95,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
 
       <VStack spacing={3} align="stretch" mt={6}>
         {menuItems.map((item, index) => {
+          // Check if this menu item is active based on current path
+          const isActive = location.pathname === item.path;
+          
           return (
             <Tooltip
               key={index}
@@ -106,24 +111,25 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
                 py={3}
                 mx={4}
                 borderRadius="md"
-                bg={item.isActive ? activeItemBg : "transparent"}
-                color={item.isActive ? "white" : "inherit"}
+                bg={isActive ? activeItemBg : "transparent"}
+                color={isActive ? "white" : "inherit"}
                 _hover={{
-                  bg: item.isActive ? activeItemBg : itemHoverBg,
-                  color: item.isActive ? "white" : "teal.500",
+                  bg: isActive ? activeItemBg : itemHoverBg,
+                  color: isActive ? "white" : "teal.500",
                 }}
                 cursor="pointer"
                 transition="all 0.2s"
+                onClick={() => handleNavigation(item.path)}
               >
                 <Flex align="center" gap={3}>
                   <Box
                     as={item.icon}
                     fontSize="20px"
-                    color={item.isActive ? "white" : "inherit"}
+                    color={isActive ? "white" : "inherit"}
                   />
                   {isSidebarOpen && (
                     <Text
-                      fontWeight={item.isActive ? "medium" : "normal"}
+                      fontWeight={isActive ? "medium" : "normal"}
                       opacity={isSidebarOpen ? 1 : 0}
                       transition="opacity 0.3s"
                     >

@@ -512,3 +512,144 @@ export function WIPForm({ initialData = {}, onSubmit }) {
     </Card>
   );
 }
+
+// ModalForm Component
+export function ModalForm({ initialData = {}, onSubmit }) {
+  const [projectCode, setProjectCode] = useState(initialData.project_code || '');
+  const [name, setName] = useState(initialData.name || '');
+  const [description, setDescription] = useState(initialData.description || '');
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const bg = useColorModeValue('white', 'gray.700');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  
+  // Determine if we're editing an existing project or creating a new one
+  const isEditing = Boolean(initialData.id);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage(""); // Clear previous messages
+    
+    const payload = { project_code: projectCode, name, description };
+    
+    try {
+      let response;
+      
+      if (isEditing) {
+        // Update existing project
+        response = await axiosInstance.put(`/projects/${initialData.id}`, payload);
+      } else {
+        // Create new project
+        response = await axiosInstance.post('/projects', payload);
+      }
+      
+      setIsSuccess(true);
+      setMessage(isEditing ? "Project updated successfully!" : "Project created successfully!");
+      
+      // Pass the updated data back to the parent component
+      onSubmit && onSubmit(response.data);
+      
+      // Reset form after successful submission (only for new projects)
+      if (!isEditing) {
+        setProjectCode('');
+        setName('');
+        setDescription('');
+      }
+    } catch (error) {
+      setIsSuccess(false);
+      setMessage(error.response?.data?.error || `Error ${isEditing ? "updating" : "creating"} project`);
+      console.error(`Error ${isEditing ? "updating" : "creating"} project:`, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Card
+      bg={bg}
+      borderRadius="lg"
+      boxShadow="md"
+      borderWidth="1px"
+      borderColor={borderColor}
+      overflow="hidden"
+    >
+      <CardHeader pb={0}>
+        <Flex align="center">
+          <Icon as={FiGrid} mr={2} color="teal.500" boxSize={5} />
+          <Heading size="md">{isEditing ? "Edit Project" : "Create New Project"}</Heading>
+        </Flex>
+      </CardHeader>
+      <CardBody>
+        <form onSubmit={handleSubmit}>
+          <VStack spacing={5} align="stretch">
+            <FormControl id="project_code" isRequired>
+              <FormLabel>Project Code</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={FiCode} color="gray.400" />
+                </InputLeftElement>
+                <Input 
+                  value={projectCode} 
+                  onChange={(e) => setProjectCode(e.target.value)}
+                  placeholder="Enter project code"
+                  borderRadius="md"
+                />
+              </InputGroup>
+            </FormControl>
+            
+            <FormControl id="name" isRequired>
+              <FormLabel>Name</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={FiFileText} color="gray.400" />
+                </InputLeftElement>
+                <Input 
+                  value={name} 
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter project name"
+                  borderRadius="md"
+                />
+              </InputGroup>
+            </FormControl>
+            
+            <FormControl id="description">
+              <FormLabel>Description</FormLabel>
+              <Textarea 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Provide a brief description of the project"
+                borderRadius="md"
+                rows={4}
+              />
+            </FormControl>
+            
+            <Button 
+              type="submit" 
+              colorScheme="teal" 
+              size="md" 
+              width="full"
+              isLoading={isLoading}
+              loadingText={isEditing ? "Updating" : "Saving"}
+              leftIcon={<FiCheckCircle />}
+              borderRadius="md"
+              boxShadow="sm"
+              _hover={{ boxShadow: 'md' }}
+            >
+              {isEditing ? "Update Project" : "Save Project"}
+            </Button>
+          </VStack>
+        </form>
+        
+        {message && (
+          <Alert status={isSuccess ? "success" : "error"} mt={4} borderRadius="md">
+            <AlertIcon />
+            {message}
+          </Alert>
+        )}
+      </CardBody>
+    </Card>
+  );
+}

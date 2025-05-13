@@ -22,7 +22,7 @@ import {
 } from "react-icons/fi";
 import { ProjectForm, SKUForm, WIPForm } from "../../components/AdminForm";
 
-function AdminForm() {
+function Dashboard() {
   const [activeTab, setActiveTab] = useState(0);
 
   // Colors
@@ -139,4 +139,4 @@ function AdminForm() {
   );
 }
 
-export default AdminForm;
+export default Dashboard;
