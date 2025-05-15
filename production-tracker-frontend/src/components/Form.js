@@ -11,7 +11,6 @@ import {
   AlertIcon,
   useToast
 } from "@chakra-ui/react";
-import axios from "axios";
 import axiosInstance from "../utils/api"; // Adjust the import path as necessary
 
 function Form({ onSubmitSuccess, project, skuId, wipId }) {
@@ -80,7 +79,7 @@ function Form({ onSubmitSuccess, project, skuId, wipId }) {
         isClosable: true,
       });
 
-      // console.log("✅ Scan submitted:", res.data);
+      console.log("✅ Scan submitted:", res.data);
       setFormData((prev) => ({ ...prev, serial_id: "" }));
       inputRef.current?.focus();
       // setIsSuccess(true);
@@ -100,6 +99,8 @@ function Form({ onSubmitSuccess, project, skuId, wipId }) {
         position: "top",
       });
 
+      setFormData((prev) => ({ ...prev, serial_id: "" }));
+      inputRef.current?.focus();
       // console.error("❌ Error:", errMsg);
       // setIsSuccess(false);
       // setMessage(errMsg);

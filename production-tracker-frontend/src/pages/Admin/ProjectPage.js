@@ -1,7 +1,6 @@
 // ProjectsPage.js - Projects management page
 import React, { useState, useEffect } from "react";
 import {
-  Box,
   Container,
   Heading,
   Text,
@@ -113,7 +112,9 @@ function ProjectsPage() {
                 borderColor={borderColor}
                 bg={cardBg}
                 boxShadow="sm"
-              >
+                height="200px"
+                display="flex"
+                flexDirection="column">
                 <CardHeader pb={2}>
                   <Flex justify="space-between" align="center">
                     <Heading size="md">{project.name}</Heading>
@@ -126,8 +127,8 @@ function ProjectsPage() {
                     </Badge>
                   </Flex>
                 </CardHeader>
-                <CardBody pt={0}>
-                  <Text color="gray.600" mb={4}>
+                <CardBody pt={0} display="flex" flexDirection="column" flex="1">
+                <Text color="gray.600" mb={4}>
                     {project.description}
                   </Text>
                   {/* <Text fontSize="sm" mb={2}>
@@ -142,7 +143,7 @@ function ProjectsPage() {
                   <Text fontSize="sm" mb={4}>
                     <strong>Quantity:</strong> ${project.quantity}
                   </Text> */}
-                  <Flex justify="flex-end" mt={2}>
+                  <Flex justify="flex-end" mt="auto">
                     <IconButton
                       icon={<FiEye />}
                       aria-label="View Project"

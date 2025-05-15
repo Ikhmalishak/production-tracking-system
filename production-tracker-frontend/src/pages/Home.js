@@ -16,7 +16,6 @@ import { useState, useEffect } from "react";
 import Form from "../components/Form";
 import OutputList from "../components/Table";
 import Header from "../components/Header";
-import axios from "axios";
 import axiosInstance from "../utils/api"
 
 function Home() {

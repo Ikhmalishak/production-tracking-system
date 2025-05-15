@@ -8,7 +8,6 @@ import {
   useColorModeValue,
   IconButton,
 } from "@chakra-ui/react";
-import { RepeatIcon } from "@chakra-ui/icons";
 import { FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/api"; // Import your axios instance
