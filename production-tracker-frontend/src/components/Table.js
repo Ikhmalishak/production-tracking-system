@@ -10,6 +10,7 @@ import {
   Select,
   Flex,
   Box,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axiosInstance from "../utils/api"; // Adjust the import path if needed
@@ -72,10 +73,11 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
       borderRadius="lg"
       boxShadow="md"
       minW={{ base: "100%", md: "35%" }}
-      maxW={{ base: "100%", lg: "30%" }}
+      maxW={{ base: "100%", lg: "50%" }}
     >
       <TableContainer width="100%" overflowX="auto">
-        <Flex justifyContent="flex-end" align="center" mb="2">
+        {/* <Flex justifyContent="space-between" align="center" mb="2">
+          <Text as = 'abbr' fontSize='md' textAlign='left'>SKU Number:</Text>
           <Select
             placeholder={loadingSkus ? "Loading SKUs..." : "Filter by SKU"}
             size="xs"
@@ -94,28 +96,28 @@ function OutputList({ refreshTrigger, skuId, projectId }) {
               </option>
             ))}
           </Select>
-        </Flex>
+        </Flex> */}
 
         <Table variant="striped" colorScheme="teal" size="sm">
           <TableCaption>Scan Records</TableCaption>
           <Thead>
             <Tr>
+              <Th>Date & Time</Th>
+              <Th>Serial Number</Th>
+              <Th>Scan number</Th> 
               <Th>SKU Number</Th>
               <Th>WIP ID</Th>
-              <Th>Serial Number</Th>
-              <Th>Scan number</Th>
-              <Th>Date & Time</Th>
             </Tr>
           </Thead>
           <Tbody>
             {data.length > 0 ? (
               data.map((item) => (
                 <Tr key={item.id}>
+                  <Td>{new Date(item.created_at).toLocaleString()}</Td>
+                  <Td>{item.serial_id}</Td>
+                  <Td>{item.scan_number}</Td> 
                   <Td>{item.sku?.sku_code}</Td>
                   <Td>{item.wip?.wip_code}</Td>
-                  <Td>{item.serial_id}</Td>
-                  <Td>{item.scan_number}</Td>
-                  <Td>{new Date(item.created_at).toLocaleString()}</Td>
                 </Tr>
               ))
             ) : (

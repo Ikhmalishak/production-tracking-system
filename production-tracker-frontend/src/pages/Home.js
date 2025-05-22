@@ -34,6 +34,13 @@ function Home() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // Custom close handler to prevent closing when requirements aren't met
+  const handleClose = () => {
+    if (selectedProjectId && selectedSkuId && selectedWipId) {
+      onClose();
+    }
+  };
+
   const refreshData = (sku_id) => {
     setSelectedSkuId(sku_id || "");
     setRefreshTrigger((prev) => prev + 1);
@@ -140,7 +147,13 @@ function Home() {
             />
           </Flex>
 
-          <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <Modal 
+            isOpen={isOpen} 
+            onClose={handleClose} 
+            isCentered
+            closeOnOverlayClick={false}
+            closeOnEsc={false}
+          >
             <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
             <ModalContent>
               <ModalHeader>Select Project</ModalHeader>
@@ -186,7 +199,11 @@ function Home() {
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose} isDisabled={!selectedProjectId || !selectedSkuId || !selectedWipId}>
+                <Button 
+                  onClick={handleClose} 
+                  isDisabled={!selectedProjectId || !selectedSkuId || !selectedWipId}
+                  colorScheme="teal"
+                >
                   Confirm
                 </Button>
               </ModalFooter>
