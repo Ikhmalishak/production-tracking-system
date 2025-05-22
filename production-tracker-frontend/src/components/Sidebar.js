@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import {
   FiHome,
-  FiUsers,
   FiSettings,
   FiPackage,
   FiFileText,
@@ -51,9 +50,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
   const menuItems = [
     { label: "Dashboard", icon: FiHome, path: "/dashboard" },
     { label: "Manage Projects", icon: FiLayers, path: "/projects" },
-    // { label: "Products", icon: FiPackage, path: "/products" },
-    // { label: "Orders", icon: FiFileText, path: "/orders" },
-    // { label: "Analytics", icon: FiFileText, path: "/analytics" },
+    { label: "Products", icon: FiPackage, path: "" },
+    { label: "Orders", icon: FiFileText, path: "" },
+    { label: "Analytics", icon: FiFileText, path: "" },
     { label: "Settings", icon: FiSettings, path: "" },// add settings path later 
   ];
 
